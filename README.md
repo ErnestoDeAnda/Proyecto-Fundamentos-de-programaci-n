@@ -21,8 +21,19 @@ Finalmente el programa funcionara al recibir los datos previamente especificados
    - Goles a favor
    - Goles en contra
    - Etapa alcanzada en la liguilla
-3. Calcular puntuación de cada equipo en base a datos anteriores
-4. Guardar las puntuaciones de cada equipo
-5. Ordenar equipos de mayor a menor puntuación
-6. Calcular probabilidad de victoria
-7. Mostrar al usuario los 3 a 5 equipos con las puntuaciones más altas y sus probabilidades
+3. Calcular puntos obtenidos:
+   puntos = (partidos ganados * 3) + (partidos empatados)
+4. Calcular máximo de puntos:
+   max= partidos*3
+5. Calcular rendimiento
+   rendimiento= (puntos/max) *100
+6. Calcular puntuacion final de cada equipo en base a:
+   -rendimiento
+   -resultados de partidos
+   -diferencia de goles  
+8. Guardar las puntuaciones de cada equipo
+9. Ordenar equipos de mayor a menor puntuación
+10. Calcular probabilidad de victoria
+    probabilidad=(puntiacion del equipo/ suma de puntuacion de todos los equipos)*100
+12. Mostrar al usuario los 3 a 5 equipos con las puntuaciones más altas y sus probabilidades
+13.Fin
