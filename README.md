@@ -13,6 +13,7 @@ Finalmente el programa funcionara al recibir los datos previamente especificados
 ## Pseudoalgoritmo
 
 1. Inicio
+
 2. Solicitar para cada equipo:
    - Puntos obtenidos en la temporada anterior
    - Partidos ganados
@@ -21,19 +22,28 @@ Finalmente el programa funcionara al recibir los datos previamente especificados
    - Goles a favor
    - Goles en contra
    - Etapa alcanzada en la liguilla
+
 3. Calcular puntos obtenidos:
-   puntos = (partidos ganados * 3) + (partidos empatados)
+   - puntos = (partidos ganados * 3) + (partidos empatados)
+
 4. Calcular máximo de puntos:
-   max= partidos*3
-5. Calcular rendimiento
-   rendimiento= (puntos/max) *100
-6. Calcular puntuacion final de cada equipo en base a:
-   -rendimiento
-   -resultados de partidos
-   -diferencia de goles  
-8. Guardar las puntuaciones de cada equipo
-9. Ordenar equipos de mayor a menor puntuación
-10. Calcular probabilidad de victoria
-    probabilidad=(puntiacion del equipo/ suma de puntuacion de todos los equipos)*100
-12. Mostrar al usuario los 3 a 5 equipos con las puntuaciones más altas y sus probabilidades
-13.Fin
+   - max = partidos * 3
+
+5. Calcular rendimiento:
+   - rendimiento = (puntos / max) * 100
+
+6. Calcular puntuación final de cada equipo en base a:
+   - rendimiento
+   - resultados de partidos
+   - diferencia de goles
+
+7. Guardar las puntuaciones de cada equipo
+
+8. Ordenar equipos de mayor a menor puntuación
+
+9. Calcular probabilidad de victoria:
+   - probabilidad = (puntuación del equipo / suma de puntuación de todos los equipos) * 100
+
+10. Mostrar al usuario los 3 a 5 equipos con las puntuaciones más altas y sus probabilidades
+
+11. Fin
