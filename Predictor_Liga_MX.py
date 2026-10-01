@@ -22,12 +22,6 @@ def diferencia_gol(goles_favor, goles_contra):
     return goles_favor - goles_contra
 
 
-def liguilla(nivel_alcanzado):
-    #Nivel alcanzado en liguilla 0=no clasifica, 1=play-in, 2=cuartos, 3=semis, 4=final
-
-    return nivel_alcanzado * 2
-
-
 def puntuacion_final(rendimiento, partidos_ganados, diferencia_gol, nivel_alcanzado):
     #Puntuacion final por equipo en base a todos los resultados
 
@@ -45,15 +39,38 @@ def probabilidad(puntuacion, suma_puntuacion):
     probabilidad_equipo = (puntuacion / suma_puntuacion) * 100
     return probabilidad_equipo
 
+def prob_final(val_prob):
+    if val_prob >= 15:
+        print("Probabilidad de victoria muy alta")
+    elif val_prob >= 10:
+        print("Probabilidad de victoria alta")
+    elif val_prob >= 5:
+        print("Probabilidad de victoria media")
+    else:
+        print("Probabilidad de victoria baja")
 
-#Prueba de calculos
+def liguilla(nivel_alcanzado):
+    if nivel_alcanzado == 1:
+        return 2
+    elif nivel_alcanzado == 2:
+        return 4
+    elif nivel_alcanzado == 3:
+        return 6
+    elif nivel_alcanzado == 4:
+        return 8
+    elif nivel_alcanzado == 5:
+        return 10
+    else:
+        return 0
+    
+#Prueba de calculos input
 nombre_equipo = input("nombre: ")
 partidos_ganados = int(input("ganados: "))
 partidos_empatados = int(input("empatados: "))
 goles_favor = int(input("Favor: "))
 goles_contra = int(input("Contra: "))
 nivel_alcanzado = int(input("Nivel alcanzado en liguilla 0=no clasifica, " 
-"1=play-in , 2=cuartos, 3=semis, 4=final: "))
+"1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: "))
 
 #Calcular para un equipo
 val_puntos = puntos_obtenidos(partidos_ganados, partidos_empatados)
@@ -71,3 +88,4 @@ val_prob = probabilidad(val_final_puntos, suma_puntuacion)
 print(f"\nResultados para {nombre_equipo}:")
 print(f"Puntuación Final: {val_final_puntos:.2f}")
 print(f"Probabilidad: {val_prob:.2f}%")
+prob_final(val_prob)
