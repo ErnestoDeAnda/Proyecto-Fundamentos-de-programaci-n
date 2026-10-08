@@ -62,30 +62,35 @@ def liguilla(nivel_alcanzado):
         return 10
     else:
         return 0
+
+correr = "y"
+
+while correr == "y":
+    #Prueba de calculos input
+    nombre_equipo = input("nombre: ")
+    partidos_ganados = int(input("ganados: "))
+    partidos_empatados = int(input("empatados: "))
+    goles_favor = int(input("Favor: "))
+    goles_contra = int(input("Contra: "))
+    nivel_alcanzado = int(input("Nivel alcanzado en liguilla 0=no clasifica, " 
+    "1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: "))
+
+    #Calcular para un equipo
+    val_puntos = puntos_obtenidos(partidos_ganados, partidos_empatados)
+    rendimiento_val = rendimiento(MAX_PUNTOS, val_puntos)
+    val_dif_gol = diferencia_gol(goles_favor, goles_contra)
+    val_liguilla = liguilla(nivel_alcanzado)
+
+    val_final_puntos = puntuacion_final(rendimiento_val, partidos_ganados, val_dif_gol, val_liguilla)
+
+    #Se asume que hay promedio de 12 puntos para cada equipo, a futuro se usaran listas para tener los datos de todos los equipos
+    suma_puntuacion = val_final_puntos + (12 * (TOTAL_EQUIPOS - 1))
+
+    val_prob = probabilidad(val_final_puntos, suma_puntuacion)
+
+    print(f"\nResultados para {nombre_equipo}:")
+    print(f"Puntuación Final: {val_final_puntos:.2f}")
+    print(f"Probabilidad: {val_prob:.2f}%")
+    prob_final(val_prob)
     
-#Prueba de calculos input
-nombre_equipo = input("nombre: ")
-partidos_ganados = int(input("ganados: "))
-partidos_empatados = int(input("empatados: "))
-goles_favor = int(input("Favor: "))
-goles_contra = int(input("Contra: "))
-nivel_alcanzado = int(input("Nivel alcanzado en liguilla 0=no clasifica, " 
-"1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: "))
-
-#Calcular para un equipo
-val_puntos = puntos_obtenidos(partidos_ganados, partidos_empatados)
-rendimiento_val = rendimiento(MAX_PUNTOS, val_puntos)
-val_dif_gol = diferencia_gol(goles_favor, goles_contra)
-val_liguilla = liguilla(nivel_alcanzado)
-
-val_final_puntos = puntuacion_final(rendimiento_val, partidos_ganados, val_dif_gol, val_liguilla)
-
-#Se asume que hay promedio de 12 puntos para cada equipo, a futuro se usaran listas para tener los datos de todos los equipos
-suma_puntuacion = val_final_puntos + (12 * (TOTAL_EQUIPOS - 1))
-
-val_prob = probabilidad(val_final_puntos, suma_puntuacion)
-
-print(f"\nResultados para {nombre_equipo}:")
-print(f"Puntuación Final: {val_final_puntos:.2f}")
-print(f"Probabilidad: {val_prob:.2f}%")
-prob_final(val_prob)
+    correr = input("¿Quieres volver a correr el programa? (y/n): ")
