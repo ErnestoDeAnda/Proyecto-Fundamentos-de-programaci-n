@@ -41,13 +41,13 @@ def probabilidad(puntuacion, suma_puntuacion):
 
 def prob_final(val_prob):
     if val_prob >= 15:
-        print("Probabilidad de victoria muy alta")
+        return "Probabilidad de victoria muy alta"
     elif val_prob >= 10:
-        print("Probabilidad de victoria alta")
+        return "Probabilidad de victoria alta"
     elif val_prob >= 5:
-        print("Probabilidad de victoria media")
+        return "Probabilidad de victoria media"
     else:
-        print("Probabilidad de victoria baja")
+        return "Probabilidad de victoria baja"
 
 def liguilla(nivel_alcanzado):
     if nivel_alcanzado == 1:
@@ -65,6 +65,17 @@ def liguilla(nivel_alcanzado):
 
 correr = "y"
 
+#Datos a guardar
+nombres = []
+ganados = []
+empatados = []
+favor = []
+contra = []
+alcanzado = []
+puntuaciones = []
+probabilidades = []
+#Se usuara a futuro para simular temporadas futuras utilizando random() temporada []
+
 while correr == "y":
     #Prueba de calculos input
     nombre_equipo = input("nombre: ")
@@ -75,22 +86,38 @@ while correr == "y":
     nivel_alcanzado = int(input("Nivel alcanzado en liguilla 0=no clasifica, " 
     "1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: "))
 
-    #Calcular para un equipo
-    val_puntos = puntos_obtenidos(partidos_ganados, partidos_empatados)
-    rendimiento_val = rendimiento(MAX_PUNTOS, val_puntos)
-    val_dif_gol = diferencia_gol(goles_favor, goles_contra)
-    val_liguilla = liguilla(nivel_alcanzado)
-
-    val_final_puntos = puntuacion_final(rendimiento_val, partidos_ganados, val_dif_gol, val_liguilla)
-
-    #Se asume que hay promedio de 12 puntos para cada equipo, a futuro se usaran listas para tener los datos de todos los equipos
-    suma_puntuacion = val_final_puntos + (12 * (TOTAL_EQUIPOS - 1))
-
-    val_prob = probabilidad(val_final_puntos, suma_puntuacion)
-
-    print(f"\nResultados para {nombre_equipo}:")
-    print(f"Puntuación Final: {val_final_puntos:.2f}")
-    print(f"Probabilidad: {val_prob:.2f}%")
-    prob_final(val_prob)
+    #Incluir en listas
+    nombres.append(nombre_equipo)
+    ganados.append(partidos_ganados)
+    empatados.append(partidos_empatados)
+    favor.append(goles_favor)
+    contra.append(goles_contra)
+    alcanzado.append(nivel_alcanzado)
     
-    correr = input("¿Quieres volver a correr el programa? (y/n): ")
+    correr = input("¿Quieres agregar otro equipo? (y/n): ")
+    
+for x in range(len(nombres)):
+        
+    val_puntos = puntos_obtenidos(ganados[x], empatados[x])
+    rendimiento_val = rendimiento(MAX_PUNTOS, val_puntos)
+    val_dif_gol = diferencia_gol(favor[x], contra[x])
+    val_liguilla = liguilla(alcanzado[x])
+    val_final_puntos = puntuacion_final(rendimiento_val, ganados[x], val_dif_gol, val_liguilla)
+    puntuaciones.append(val_final_puntos)
+
+# Suma real de las puntuaciones de los equipos registrados 
+suma_puntuacion = sum(puntuaciones)
+
+#Calculo probabilidad
+for x in range(len(nombres)):
+    val_prob = probabilidad(puntuaciones[x], suma_puntuacion)
+    probabilidades.append(val_prob)
+
+for x in range(len(nombres)):
+    print(f"\nResultados para {nombres[x]}:")
+    print(f"Puntuación Final: {puntuaciones[x]:.2f}")
+    print(f"Probabilidad: {probabilidades[x]:.2f}%")
+    print(prob_final(probabilidades[x]))
+    
+
+def temporada(
