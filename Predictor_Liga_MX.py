@@ -74,50 +74,61 @@ contra = []
 alcanzado = []
 puntuaciones = []
 probabilidades = []
-#Se usuara a futuro para simular temporadas futuras utilizando random() temporada []
+
+matriz_puntuaciones = []
+
+temporadas = int(input("Numero de temporadas por calcular: "))
 
 while correr == "y":
-    #Prueba de calculos input
+    
     nombre_equipo = input("nombre: ")
-    partidos_ganados = int(input("ganados: "))
-    partidos_empatados = int(input("empatados: "))
-    goles_favor = int(input("Favor: "))
-    goles_contra = int(input("Contra: "))
-    nivel_alcanzado = int(input("Nivel alcanzado en liguilla 0=no clasifica, " 
-    "1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: "))
-
-    #Incluir en listas
     nombres.append(nombre_equipo)
-    ganados.append(partidos_ganados)
-    empatados.append(partidos_empatados)
-    favor.append(goles_favor)
-    contra.append(goles_contra)
-    alcanzado.append(nivel_alcanzado)
-    
     correr = input("¿Quieres agregar otro equipo? (y/n): ")
+  
+for year in range(temporadas):
+    puntuaciones_year = []
     
-for x in range(len(nombres)):
+    for x in range(len(nombres)):
+        print("Informacion del", nombres[x], "año", year+1)
         
-    val_puntos = puntos_obtenidos(ganados[x], empatados[x])
-    rendimiento_val = rendimiento(MAX_PUNTOS, val_puntos)
-    val_dif_gol = diferencia_gol(favor[x], contra[x])
-    val_liguilla = liguilla(alcanzado[x])
-    val_final_puntos = puntuacion_final(rendimiento_val, ganados[x], val_dif_gol, val_liguilla)
-    puntuaciones.append(val_final_puntos)
+        #Prueba de calculos input
+        partidos_ganados = int(input("ganados: "))
+        partidos_empatados = int(input("empatados: "))
+        goles_favor = int(input("Favor: "))
+        goles_contra = int(input("Contra: "))
+        nivel_alcanzado = int(input("Nivel alcanzado en liguilla 0=no clasifica, " 
+        "1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: "))
+
+        #Incluir en listas
+        
+        ganados.append(partidos_ganados)
+        empatados.append(partidos_empatados)
+        favor.append(goles_favor)
+        contra.append(goles_contra)
+        alcanzado.append(nivel_alcanzado)
+            
+        val_puntos = puntos_obtenidos(partidos_ganados, partidos_empatados)
+        rendimiento_val = rendimiento(MAX_PUNTOS, val_puntos)
+        val_dif_gol = diferencia_gol(goles_favor, goles_contra)
+        val_liguilla = liguilla(nivel_alcanzado)
+        val_final_puntos = puntuacion_final(rendimiento_val, partidos_ganados, val_dif_gol, val_liguilla)
+        puntuaciones.append(val_final_puntos)
+        
+        puntuaciones_year.append(val_final_puntos)
+    
+    matriz_puntuaciones.append(puntuaciones_year)
 
 # Suma real de las puntuaciones de los equipos registrados 
-suma_puntuacion = sum(puntuaciones)
+for year in range(temporadas):
+    print("Resultado año", year+1)
+    suma_puntuacion = sum(matriz_puntuaciones[year])
 
-#Calculo probabilidad
-for x in range(len(nombres)):
-    val_prob = probabilidad(puntuaciones[x], suma_puntuacion)
-    probabilidades.append(val_prob)
+    #Calculo probabilidad
+    for x in range(len(nombres)):
+        val_prob = probabilidad(matriz_puntuaciones[year][x], suma_puntuacion)
+        probabilidades.append(val_prob)
 
-for x in range(len(nombres)):
-    print(f"\nResultados para {nombres[x]}:")
-    print(f"Puntuación Final: {puntuaciones[x]:.2f}")
-    print(f"Probabilidad: {probabilidades[x]:.2f}%")
-    print(prob_final(probabilidades[x]))
-    
-
-def temporada(
+        print(f"\nResultados para {nombres[x]}:", "año", year+1)
+        print(f"Puntuación Final: {matriz_puntuaciones[year][x]:.2f}")
+        print(f"Probabilidad: {val_prob:.2f}%")
+        print(prob_final(val_prob))
