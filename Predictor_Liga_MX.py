@@ -63,6 +63,27 @@ def liguilla(nivel_alcanzado):
     else:
         return 0
 
+#Limpiar el nombre del equipo de caracteres no alphanumericos
+def nombre_limpio(nombre):
+    limpio = ""
+    for letra in nombre:
+        if letra.isalnum() or letra == " ":
+            limpio = limpio + letra
+    return limpio.strip().title()
+
+#Checar que la informacion dada para los valores sea un numero y no contenga otros caracteres
+def es_numero(numero):
+    while True:
+        valor = input(numero)
+        digitos = ""
+        for letra in valor:
+            if letra.isdigit():
+                digitos = digitos + letra
+        if digitos != "":
+            return int(digitos)
+        else:
+            print("Ingresa un numero valido")
+    
 correr = "y"
 
 #Datos a guardar
@@ -77,11 +98,12 @@ probabilidades = []
 
 matriz_puntuaciones = []
 
-temporadas = int(input("Numero de temporadas por calcular: "))
+temporadas = es_numero("Numero de temporadas por calcular: ")
 
-while correr == "y":
+while correr.lower() == "y":
     
     nombre_equipo = input("nombre: ")
+    nombre_equipo = nombre_limpio(nombre_equipo)
     nombres.append(nombre_equipo)
     correr = input("¿Quieres agregar otro equipo? (y/n): ")
   
@@ -89,16 +111,16 @@ for year in range(temporadas):
     puntuaciones_year = []
     
     for x in range(len(nombres)):
-        print("Informacion del", nombres[x], "año", year+1)
+        print("Informacion del", nombres[x], "año", str(year+1))
         
         #Prueba de calculos input
-        partidos_ganados = int(input("ganados: "))
-        partidos_empatados = int(input("empatados: "))
-        goles_favor = int(input("Favor: "))
-        goles_contra = int(input("Contra: "))
-        nivel_alcanzado = int(input("Nivel alcanzado en liguilla 0=no clasifica, " 
-        "1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: "))
-
+        partidos_ganados = es_numero("ganados: ")
+        partidos_empatados = es_numero("empatados: ")
+        goles_favor = es_numero("Favor: ")
+        goles_contra = es_numero("Contra: ")
+        nivel_alcanzado = es_numero("Nivel alcanzado en liguilla 0=no clasifica, " 
+        "1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: ")
+         
         #Incluir en listas
         
         ganados.append(partidos_ganados)
@@ -120,7 +142,7 @@ for year in range(temporadas):
 
 # Suma real de las puntuaciones de los equipos registrados 
 for year in range(temporadas):
-    print("Resultado año", year+1)
+    print("Resultado año", str(year+1))
     suma_puntuacion = sum(matriz_puntuaciones[year])
 
     #Calculo probabilidad
@@ -128,7 +150,7 @@ for year in range(temporadas):
         val_prob = probabilidad(matriz_puntuaciones[year][x], suma_puntuacion)
         probabilidades.append(val_prob)
 
-        print(f"\nResultados para {nombres[x]}:", "año", year+1)
+        print(f"\nResultados para {nombres[x]}:", "año", str(year+1))
         print(f"Puntuación Final: {matriz_puntuaciones[year][x]:.2f}")
         print(f"Probabilidad: {val_prob:.2f}%")
         print(prob_final(val_prob))
