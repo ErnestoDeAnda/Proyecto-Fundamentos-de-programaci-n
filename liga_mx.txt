@@ -1,0 +1,19 @@
+Equipo,Ganados,Empatados,Goles_Favor,Goles_Contra,Nivel_Liguilla
+Pumas UNAM,10,6,34,17,4
+Guadalajara,11,3,33,17,3
+Cruz Azul,9,6,31,18,5
+Pachuca,9,4,25,19,3
+Toluca,8,6,28,16,2
+Atlas,7,5,16,18,2
+Tigres UANL,7,4,28,18,2
+América,7,4,20,17,2
+Tijuana,5,8,19,17,0
+León,7,1,22,32,0
+Querétaro,4,8,17,21,0
+FC Juárez,5,4,26,32,0
+Monterrey,5,3,22,24,0
+Atlético de San Luis,5,3,24,27,0
+Necaxa,5,3,19,25,0
+Mazatlán,4,3,22,37,0
+Puebla,3,4,13,26,0
+Santos Laguna,3,3,20,38,0
