@@ -1,45 +1,44 @@
-#Operaciones
+import random
+
+# Constantes a nivel de modulo
 PARTIDOS_TOTAL = 17
 TOTAL_EQUIPOS = 18
-
-#Maximo de puntos por temporada
 MAX_PUNTOS = PARTIDOS_TOTAL * 3
 
-def puntos_obtenidos(partidos_ganados, partidos_empatados):
-    #Puntos obtenidos
-    
-    return (partidos_ganados * 3) + partidos_empatados
-    
-def rendimiento(MAX_PUNTOS, val_puntos):
-    #Rendimiento final del equipo
 
-    return (val_puntos / MAX_PUNTOS) * 100
+def puntos_obtenidos(partidos_ganados, partidos_empatados):
+    """Calcula los puntos totales obtenidos por un equipo."""
+    return (partidos_ganados * 3) + partidos_empatados
+
+
+def rendimiento(max_puntos, val_puntos):
+    """Calcula el porcentaje de rendimiento final del equipo."""
+    return (val_puntos / max_puntos) * 100
 
 
 def diferencia_gol(goles_favor, goles_contra):
-    #Diferencia de goles
-
+    """Calcula la diferencia entre goles a favor y en contra."""
     return goles_favor - goles_contra
 
 
-def puntuacion_final(rendimiento, partidos_ganados, diferencia_gol, nivel_alcanzado):
-    #Puntuacion final por equipo en base a todos los resultados
-
-    puntuacion = (rendimiento * 0.4) + (partidos_ganados * 0.15) + (diferencia_gol * 0.25) + (nivel_alcanzado * 0.2)
+def puntuacion_final(rendimiento_val, partidos_ganados, dif_gol,
+                     nivel_alcanzado):
+    """Calcula la puntuacion final ponderada de un equipo."""
+    puntuacion = ((rendimiento_val * 0.4)
+                  + (partidos_ganados * 0.15)
+                  + (dif_gol * 0.25)
+                  + (nivel_alcanzado * 0.2))
     return puntuacion
 
 
-#Suma de todas las puntaciones finales de los equipos
-#suma_puntuacion= puntuacion_final de cada equipo sumada
-
-
 def probabilidad(puntuacion, suma_puntuacion):
-    #Probabilidad de ser campeon
-
+    """Calcula el porcentaje de probabilidad de ser campeon."""
     probabilidad_equipo = (puntuacion / suma_puntuacion) * 100
     return probabilidad_equipo
 
+
 def prob_final(val_prob):
+    """Devuelve una descripcion textual segun la probabilidad."""
     if val_prob >= 15:
         return "Probabilidad de victoria muy alta"
     elif val_prob >= 10:
@@ -49,7 +48,9 @@ def prob_final(val_prob):
     else:
         return "Probabilidad de victoria baja"
 
+
 def liguilla(nivel_alcanzado):
+    """Asigna puntos extra segun la fase alcanzada en liguilla."""
     if nivel_alcanzado == 1:
         return 2
     elif nivel_alcanzado == 2:
@@ -63,18 +64,20 @@ def liguilla(nivel_alcanzado):
     else:
         return 0
 
-#Limpiar el nombre del equipo de caracteres no alphanumericos
+
 def nombre_limpio(nombre):
+    """Elimina caracteres no alfanumericos del nombre del equipo."""
     limpio = ""
     for letra in nombre:
         if letra.isalnum() or letra == " ":
             limpio = limpio + letra
     return limpio.strip().title()
 
-#Checar que la informacion dada para los valores sea un numero y no contenga otros caracteres
-def es_numero(numero):
+
+def es_numero(mensaje):
+    """Valida que la entrada del usuario contenga digitos enteros."""
     while True:
-        valor = input(numero)
+        valor = input(mensaje)
         digitos = ""
         for letra in valor:
             if letra.isdigit():
@@ -83,10 +86,28 @@ def es_numero(numero):
             return int(digitos)
         else:
             print("Ingresa un numero valido")
-    
-correr = "y"
 
-#Datos a guardar
+
+def cargar_datos(nombre_archivo, nombres, ganados, empatados, favor,
+                 contra, alcanzado):
+    """Lee los datos historicos de los equipos desde un archivo."""
+    archivo = open(nombre_archivo, "r", encoding="utf-8")
+    archivo.readline()
+
+    for linea in archivo:
+        linea_limpia = linea.strip()
+        if linea_limpia != "":
+            datos = linea_limpia.split(",")
+            nombres.append(nombre_limpio(datos[0]))
+            ganados.append(int(datos[1]))
+            empatados.append(int(datos[2]))
+            favor.append(int(datos[3]))
+            contra.append(int(datos[4]))
+            alcanzado.append(int(datos[5]))
+    archivo.close()
+
+
+# Listas y matriz para almacenar datos de los equipos
 nombres = []
 ganados = []
 empatados = []
@@ -95,62 +116,50 @@ contra = []
 alcanzado = []
 puntuaciones = []
 probabilidades = []
-
 matriz_puntuaciones = []
+
+cargar_datos("liga_mx.txt", nombres, ganados, empatados, favor,
+             contra, alcanzado)
 
 temporadas = es_numero("Numero de temporadas por calcular: ")
 
-while correr.lower() == "y":
-    
-    nombre_equipo = input("nombre: ")
-    nombre_equipo = nombre_limpio(nombre_equipo)
-    nombres.append(nombre_equipo)
-    correr = input("¿Quieres agregar otro equipo? (y/n): ")
-  
 for year in range(temporadas):
     puntuaciones_year = []
-    
-    for x in range(len(nombres)):
-        print("Informacion del", nombres[x], "año", str(year+1))
-        
-        #Prueba de calculos input
-        partidos_ganados = es_numero("ganados: ")
-        partidos_empatados = es_numero("empatados: ")
-        goles_favor = es_numero("Favor: ")
-        goles_contra = es_numero("Contra: ")
-        nivel_alcanzado = es_numero("Nivel alcanzado en liguilla 0=no clasifica, " 
-        "1=play-in , 2=cuartos, 3=semis, 4=final , 5= Campeón: ")
-         
-        #Incluir en listas
-        
-        ganados.append(partidos_ganados)
-        empatados.append(partidos_empatados)
-        favor.append(goles_favor)
-        contra.append(goles_contra)
-        alcanzado.append(nivel_alcanzado)
-            
+
+    for i in range(len(nombres)):
+        partidos_ganados = ganados[i] + random.randint(-2, 2)
+        if partidos_ganados < 0:
+            partidos_ganados = 0
+
+        partidos_empatados = empatados[i] + random.randint(-2, 2)
+        if partidos_empatados < 0:
+            partidos_empatados = 0
+
+        goles_favor = favor[i] + random.randint(-4, 4)
+        goles_contra = contra[i] + random.randint(-4, 4)
+        nivel_alcanzado = random.randint(0, 5)
+
         val_puntos = puntos_obtenidos(partidos_ganados, partidos_empatados)
         rendimiento_val = rendimiento(MAX_PUNTOS, val_puntos)
         val_dif_gol = diferencia_gol(goles_favor, goles_contra)
         val_liguilla = liguilla(nivel_alcanzado)
-        val_final_puntos = puntuacion_final(rendimiento_val, partidos_ganados, val_dif_gol, val_liguilla)
+        val_final_puntos = puntuacion_final(rendimiento_val,
+            partidos_ganados,val_dif_gol,val_liguilla)
         puntuaciones.append(val_final_puntos)
-        
         puntuaciones_year.append(val_final_puntos)
-    
+
     matriz_puntuaciones.append(puntuaciones_year)
 
-# Suma real de las puntuaciones de los equipos registrados 
+# Calculo e impresion de resultados por temporada
 for year in range(temporadas):
-    print("Resultado año", str(year+1))
+    print("\nResultado año " + str(year + 1))
     suma_puntuacion = sum(matriz_puntuaciones[year])
 
-    #Calculo probabilidad
-    for x in range(len(nombres)):
-        val_prob = probabilidad(matriz_puntuaciones[year][x], suma_puntuacion)
+    for i in range(len(nombres)):
+        val_prob = probabilidad(matriz_puntuaciones[year][i], suma_puntuacion)
         probabilidades.append(val_prob)
 
-        print(f"\nResultados para {nombres[x]}:", "año", str(year+1))
-        print(f"Puntuación Final: {matriz_puntuaciones[year][x]:.2f}")
-        print(f"Probabilidad: {val_prob:.2f}%")
+        print("\nResultados para " + nombres[i] + " año " + str(year + 1))
+        print("Puntuacion Final: %.2f" % matriz_puntuaciones[year][i])
+        print("Probabilidad: %.2f%%" % val_prob)
         print(prob_final(val_prob))
